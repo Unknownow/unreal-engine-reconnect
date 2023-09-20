@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "UObject/Object.h"
 #include "CharacterInGame.generated.h"
@@ -11,7 +12,7 @@
  * 
  */
 UCLASS()
-class UERECONNECT_API ACharacterInGame : public ACharacter
+class UERECONNECT_API ACharacterInGame : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 protected:
 
 	/** Called for forwards/backward input */

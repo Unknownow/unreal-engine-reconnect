@@ -14,4 +14,7 @@ UCLASS()
 class UERECONNECT_API AGameStateInGame : public AGameStateBase
 {
 	GENERATED_BODY()
+
+public:
+	AGameStateInGame();
 };

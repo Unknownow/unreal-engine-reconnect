@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameModeInGame.h"
+
 AGameModeInGame::AGameModeInGame()
 {
 	// set default pawn class to our Blueprinted character
@@ -9,4 +10,24 @@ AGameModeInGame::AGameModeInGame()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+}
+
+void AGameModeInGame::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+}
+
+void AGameModeInGame::AddInactivePlayerPawn(APawn* PlayerPawn)
+{
+	InactivePlayerPawns.Add(PlayerPawn);
+}
+
+void AGameModeInGame::AddInactivePlayerController(APlayerControllerInGame* PlayerController)
+{
+	InactivePlayerControllers.Add(PlayerController);
+}
+
+void AGameModeInGame::AddInactivePlayerState(APlayerStateInGame* PlayerState)
+{
+	InactivePlayerStates.Add(PlayerState);
 }

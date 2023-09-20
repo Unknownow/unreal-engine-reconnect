@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerControllerInGame.h"
+#include "PlayerStateInGame.h"
 #include "GameFramework/GameModeBase.h"
 #include "UObject/Object.h"
 #include "GameModeInGame.generated.h"
@@ -17,4 +19,18 @@ class UERECONNECT_API AGameModeInGame : public AGameModeBase
 
 public:
 	AGameModeInGame();
+
+	virtual void Logout(AController* Exiting) override;
+
+	void AddInactivePlayerPawn(APawn* PlayerPawn);
+	void AddInactivePlayerController(APlayerControllerInGame* PlayerController);
+	void AddInactivePlayerState(APlayerStateInGame* PlayerState);
+
+protected:
+	UPROPERTY()
+	TArray<APawn*> InactivePlayerPawns;
+	UPROPERTY()
+	TArray<APlayerControllerInGame*> InactivePlayerControllers;
+	UPROPERTY()
+	TArray<APlayerStateInGame*> InactivePlayerStates;
 };
