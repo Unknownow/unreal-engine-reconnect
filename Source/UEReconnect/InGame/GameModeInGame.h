@@ -26,6 +26,15 @@ public:
 	void AddInactivePlayerController(APlayerControllerInGame* PlayerController);
 	void AddInactivePlayerState(APlayerStateInGame* PlayerState);
 
+	virtual APlayerController* Login(
+		UPlayer*                NewPlayer,
+		ENetRole                InRemoteRole,
+		const FString&          Portal,
+		const FString&          Options,
+		const FUniqueNetIdRepl& UniqueId,
+		FString&                ErrorMessage
+	) override;
+
 protected:
 	UPROPERTY()
 	TArray<APawn*> InactivePlayerPawns;
@@ -33,4 +42,7 @@ protected:
 	TArray<APlayerControllerInGame*> InactivePlayerControllers;
 	UPROPERTY()
 	TArray<APlayerStateInGame*> InactivePlayerStates;
+
+	UPROPERTY()
+	TMap<FUniqueNetIdRepl, TObjectPtr<APlayerControllerInGame>> SavedPlayerControllers;
 };

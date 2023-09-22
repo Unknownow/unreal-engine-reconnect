@@ -15,6 +15,7 @@ class UERECONNECT_API APlayerControllerInGame : public APlayerController
 	GENERATED_BODY()
 
 public:
+	virtual void OnNetCleanup(UNetConnection* Connection) override;
 	virtual void Destroyed() override;
 	virtual void PawnLeavingGame() override;
 

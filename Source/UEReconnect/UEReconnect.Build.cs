@@ -28,7 +28,8 @@ public class UEReconnect : ModuleRules
 			"HeadMountedDisplay",
 			"GameplayAbilities",
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks",
+			"CoreOnline",
 		});
 	}
 }

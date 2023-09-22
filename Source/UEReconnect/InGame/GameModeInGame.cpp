@@ -2,6 +2,8 @@
 
 #include "GameModeInGame.h"
 
+#include "Kismet/GameplayStatics.h"
+
 AGameModeInGame::AGameModeInGame()
 {
 	// set default pawn class to our Blueprinted character
@@ -30,4 +32,45 @@ void AGameModeInGame::AddInactivePlayerController(APlayerControllerInGame* Playe
 void AGameModeInGame::AddInactivePlayerState(APlayerStateInGame* PlayerState)
 {
 	InactivePlayerStates.Add(PlayerState);
+}
+
+APlayerController* AGameModeInGame::Login(
+	UPlayer*                NewPlayer,
+	ENetRole                InRemoteRole,
+	const FString&          Portal,
+	const FString&          Options,
+	const FUniqueNetIdRepl& UniqueId,
+	FString&                ErrorMessage
+)
+{
+	UE_LOG(LogTemp, Error, TEXT("AGameModeInGame::Login NetId =  %s"), *UniqueId.ToDebugString());
+
+	APlayerControllerInGame* PC = nullptr;
+
+	if (SavedPlayerControllers.Contains(UniqueId))
+	{
+		PC = SavedPlayerControllers[UniqueId];
+		// Find a starting spot
+		FString ErrMessage;
+		if (!UpdatePlayerStartSpot(PC, Portal, ErrMessage))
+		{
+			UE_LOG(LogGameMode, Warning, TEXT("InitNewPlayer: %s"), *ErrMessage);
+			PC->Destroy();
+			return nullptr;
+		}
+
+		// Set up spectating
+		bool bSpectator = FCString::Stricmp(*UGameplayStatics::ParseOption(Options, TEXT("SpectatorOnly")), TEXT("1")) == 0;
+		if (bSpectator || MustSpectate(PC))
+		{
+			PC->StartSpectatingOnly();
+		}
+	}
+	else
+	{
+		PC = Cast<APlayerControllerInGame>(Super::Login(NewPlayer, InRemoteRole, Portal, Options, UniqueId, ErrorMessage));
+		SavedPlayerControllers.Add(UniqueId, PC);
+	}
+
+	return PC;
 }
